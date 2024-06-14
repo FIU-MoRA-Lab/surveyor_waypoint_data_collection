@@ -1,0 +1,14 @@
+# Ignore all files in 'in ' and its subdirectories
+in/**
+in/*
+out/**
+out/*
+# Unignore specific files in 'in ' and its subdirectories
+!in/square_mission.txt
+!out/erp_FIUBBC_beach.csv
+!out/erp_FIUMMC_lake.csv
+!out/square_mission.csv
+!out/square_mission.sea
+# Ensure the directories themselves are not ignored
+!in/
+!out/
