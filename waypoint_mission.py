@@ -210,7 +210,7 @@ def main(filename, erp_filename, mission_postfix= ""):
 
 if __name__ == "__main__":
     if len(sys.argv) not in [3, 4]:
-        print("Usage: python converter.py <filename> <erp_filename> <mission_postfix>")
+        print("Usage: python waypoint_mission.py <filename> <erp_filename> <mission_postfix>")
         sys.exit(1)
 
     main(*sys.argv[1:])
