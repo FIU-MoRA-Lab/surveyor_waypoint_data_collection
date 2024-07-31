@@ -80,14 +80,16 @@ def main(filename, erp_filename, mission_postfix= ""):
     waypoints = hlp.read_csv_into_tuples(filename)
     erp = hlp.read_csv_into_tuples(erp_filename)
     
-    THROTTLE = 30  # Default throttle value
+    THROTTLE = 15  # Default throttle value
     index = 0 # Initialization variables
     ONLY_AT_WAYPOINT = True # Set it to true if you want a separate data csv file collected ONLY at the waypoints
+    data_to_be_collected = ['coordinates', 'heading']
 
     boat = surveyor.Surveyor()
     with boat:
         start_mission(boat, 1)
-        data_df = pd.DataFrame([boat.get_data()]) #Allocating data
+        data_df = pd.DataFrame([boat.get_data(data_to_be_collected)]) #Allocating data
+        print(data_df)
         current_coordinates = tuple(data_df[['Latitude', 'Longitude']].iloc[-1])
 
         while index < len(waypoints):
@@ -111,15 +113,15 @@ def main(filename, erp_filename, mission_postfix= ""):
                 if not is_clear(boat):
                     avoid_obstacle(boat)
 
-                data = hlp.process_gga_and_save_data(boat, post_fix = mission_postfix)
+                data = hlp.process_gga_and_save_data(boat, data_keys = data_to_be_collected, post_fix = mission_postfix)
                 data_df = pd.concat([data_df, pd.DataFrame([data])], ignore_index=True)
                 current_coordinates = tuple(data_df[['Latitude', 'Longitude']].iloc[-1])
                 print(f'Meters to next waypoint {geodesic(current_coordinates,desired_coordinates ).meters:.2f}')
 
-            if hlp.are_coordinates_close(boat.get_gps_coordinates(), desired_coordinates, tolerance_meters = 4.0):
+            if hlp.are_coordinates_close(boat.get_gps_coordinates(), desired_coordinates, tolerance_meters = 2.0):
                 print('Successful waypoint')
                 if ONLY_AT_WAYPOINT:
-                    hlp.process_gga_and_save_data(boat, post_fix = mission_postfix + 'only_waypoints')
+                    hlp.process_gga_and_save_data(boat, data_keys = data_to_be_collected, post_fix = mission_postfix + 'only_waypoints')
                 index += 1
             else:
                 print('Failed waypoint')
