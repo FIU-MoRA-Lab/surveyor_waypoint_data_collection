@@ -12,3 +12,4 @@ out/*
 # Ensure the directories themselves are not ignored
 !in/
 !out/
+_*
