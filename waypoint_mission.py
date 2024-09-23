@@ -80,7 +80,7 @@ def main(filename, erp_filename, mission_postfix= ""):
     waypoints = hlp.read_csv_into_tuples(filename)
     erp = hlp.read_csv_into_tuples(erp_filename)
     
-    THROTTLE = 20  # Default throttle value
+    THROTTLE = 25  # Default throttle value
     index = 0 # Initialization variables
     ONLY_AT_WAYPOINT = True # Set it to true if you want a separate data csv file collected ONLY at the waypoints
     data_to_be_collected = ['coordinates', 'time', 'heading', 'exo2_data']
