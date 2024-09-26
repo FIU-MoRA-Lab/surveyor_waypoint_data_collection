@@ -11,6 +11,7 @@ import pandas as pd
 import surveyor_library.surveyor_helper as hlp
 import surveyor_library.surveyor as surveyor
 from geopy.distance import geodesic
+import argparse
 
 def start_mission(boat, count = 5):
     """
@@ -132,9 +133,18 @@ def main(filename, erp_filename, mission_postfix= ""):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) not in [3, 4]:
-        print("Usage: python waypoint_mission.py <filename> <erp_filename> <mission_postfix>")
-        sys.exit(1)
+    parser = argparse.ArgumentParser(description='Waypoint mission script.')
 
-    main(*sys.argv[1:])
+    # Add required positional arguments
+    parser.add_argument('filename', type=str, help='The filename for waypoints.')
+    parser.add_argument('erp_filename', type=str, help='The filename for ERP.')
+    
+    # Add optional argument with a default value
+    parser.add_argument('mission_postfix', type=str, nargs='?', default='', help='Optional mission postfix.')
+
+    # Parse the command line arguments
+    args = parser.parse_args()
+
+    # Call the main function with parsed arguments
+    main(args.filename, args.erp_filename, args.mission_postfix)
 
