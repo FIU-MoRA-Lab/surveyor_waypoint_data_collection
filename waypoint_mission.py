@@ -8,10 +8,13 @@ Inputs:
 import sys
 import time
 import pandas as pd
-import surveyor_library.surveyor_helper as hlp
+import surveyor_library.helpers as hlp
 import surveyor_library.surveyor as surveyor
 from geopy.distance import geodesic
 import argparse
+import logging
+
+hlp.HELPER_LOGGER.setLevel(20)
 
 def start_mission(boat, count = 5):
     """
@@ -84,9 +87,13 @@ def main(filename, erp_filename, mission_postfix= ""):
     THROTTLE = 25  # Default throttle value
     index = 0 # Initialization variables
     ONLY_AT_WAYPOINT = True # Set it to true if you want a separate data csv file collected ONLY at the waypoints
-    data_to_be_collected = ['coordinates', 'time', 'heading', 'exo2_data']
+    data_to_be_collected = ['state', 'exo2']
 
-    boat = surveyor.Surveyor()
+    boat = surveyor.Surveyor(sensors_to_use=['exo2', 'camera', 'lidar'],
+    sensors_config={'exo2': {'exo2_server_ip': '192.168.0.20'},
+                    'camera': {},
+                    'lidar': {}}
+)
     with boat:
         start_mission(boat, 1)
         data_df = pd.DataFrame([boat.get_data(data_to_be_collected)]) #Allocating data
