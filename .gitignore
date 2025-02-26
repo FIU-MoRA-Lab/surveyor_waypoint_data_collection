@@ -3,6 +3,7 @@ in/**
 in/*
 out/**
 out/*
+records*
 # Unignore specific files in 'in ' and its subdirectories
 !in/square_mission.txt
 !out/erp_FIUBBC_beach.csv
