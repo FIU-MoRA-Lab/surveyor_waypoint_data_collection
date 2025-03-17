@@ -85,15 +85,15 @@ def main(filename, erp_filename, mission_postfix= ""):
     
     THROTTLE = 25  # Default throttle value
     index = 0 # Initialization variables
-    ONLY_AT_WAYPOINT = True # Set it to true if you want a separate data csv file collected ONLY at the waypoints
+    ONLY_AT_WAYPOINT = False # Set it to true if you want a separate data csv file collected ONLY at the waypoints
     data_to_be_collected = ['state', 'exo2']
 
     boat = surveyor.Surveyor(sensors_to_use=['exo2', 'camera'],
-    sensors_config={'exo2': {'exo2_server_ip': '192.168.0.68'},
-                    'camera': {},
-                    'lidar': {}},
-    logger_level=logging.INFO
-            )
+                            sensors_config={'exo2': {'exo2_server_ip': '192.168.0.68'},
+                                            'camera': {},
+                                            'lidar': {}},
+                            logger_level=logging.INFO
+                            )
     with boat:
         start_mission(boat, 1)
         print(pd.DataFrame([boat.get_data(data_to_be_collected)])) #Show example of data being collected
@@ -125,7 +125,7 @@ def main(filename, erp_filename, mission_postfix= ""):
                 current_coordinates = boat.get_gps_coordinates()
                 print(f'Meters to next waypoint {geodesic(current_coordinates,desired_coordinates ).meters:.2f}')
 
-            if True:#hlp.are_coordinates_close(boat.get_gps_coordinates(), desired_coordinates, tolerance_meters = 2.5):
+            if hlp.are_coordinates_close(boat.get_gps_coordinates(), desired_coordinates, tolerance_meters = 2.5):
                 print('Successful waypoint')
                 if ONLY_AT_WAYPOINT:
                     hlp.process_gga_and_save_data(boat, data_keys = data_to_be_collected, post_fix = mission_postfix + 'only_waypoints')
