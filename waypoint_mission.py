@@ -14,7 +14,6 @@ from geopy.distance import geodesic
 import argparse
 import logging
 
-hlp.HELPER_LOGGER.setLevel(20)
 
 def start_mission(boat, count = 5):
     """
@@ -89,16 +88,16 @@ def main(filename, erp_filename, mission_postfix= ""):
     ONLY_AT_WAYPOINT = True # Set it to true if you want a separate data csv file collected ONLY at the waypoints
     data_to_be_collected = ['state', 'exo2']
 
-    boat = surveyor.Surveyor(sensors_to_use=['exo2', 'camera', 'lidar'],
-    sensors_config={'exo2': {'exo2_server_ip': '192.168.0.20'},
+    boat = surveyor.Surveyor(sensors_to_use=['exo2', 'camera'],
+    sensors_config={'exo2': {'exo2_server_ip': '192.168.0.68'},
                     'camera': {},
-                    'lidar': {}}
-)
+                    'lidar': {}},
+    logger_level=logging.WARNING
+            )
     with boat:
         start_mission(boat, 1)
-        data_df = pd.DataFrame([boat.get_data(data_to_be_collected)]) #Allocating data
-        print(data_df)
-        current_coordinates = tuple(data_df[['Latitude', 'Longitude']].iloc[-1])
+        print(pd.DataFrame([boat.get_data(data_to_be_collected)])) #Show example of data being collected
+        current_coordinates = boat.get_gps_coordinates()
 
         while index < len(waypoints):
 
@@ -121,9 +120,9 @@ def main(filename, erp_filename, mission_postfix= ""):
                 if not is_clear(boat):
                     avoid_obstacle(boat)
 
-                data = hlp.process_gga_and_save_data(boat, data_keys = data_to_be_collected, post_fix = mission_postfix)
-                data_df = pd.concat([data_df, pd.DataFrame([data])], ignore_index=True)
-                current_coordinates = tuple(data_df[['Latitude', 'Longitude']].iloc[-1])
+                data = hlp.process_gga_and_save_data(boat, data_keys = data_to_be_collected, post_fix = mission_postfix) # You may save and retreive data at the same time
+                
+                current_coordinates = boat.get_gps_coordinates()
                 print(f'Meters to next waypoint {geodesic(current_coordinates,desired_coordinates ).meters:.2f}')
 
             if hlp.are_coordinates_close(boat.get_gps_coordinates(), desired_coordinates, tolerance_meters = 2.5):
