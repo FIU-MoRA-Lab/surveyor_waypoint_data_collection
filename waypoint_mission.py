@@ -92,7 +92,7 @@ def main(filename, erp_filename, mission_postfix= ""):
     sensors_config={'exo2': {'exo2_server_ip': '192.168.0.68'},
                     'camera': {},
                     'lidar': {}},
-    logger_level=logging.WARNING
+    logger_level=logging.INFO
             )
     with boat:
         start_mission(boat, 1)
@@ -125,7 +125,7 @@ def main(filename, erp_filename, mission_postfix= ""):
                 current_coordinates = boat.get_gps_coordinates()
                 print(f'Meters to next waypoint {geodesic(current_coordinates,desired_coordinates ).meters:.2f}')
 
-            if hlp.are_coordinates_close(boat.get_gps_coordinates(), desired_coordinates, tolerance_meters = 2.5):
+            if True:#hlp.are_coordinates_close(boat.get_gps_coordinates(), desired_coordinates, tolerance_meters = 2.5):
                 print('Successful waypoint')
                 if ONLY_AT_WAYPOINT:
                     hlp.process_gga_and_save_data(boat, data_keys = data_to_be_collected, post_fix = mission_postfix + 'only_waypoints')
