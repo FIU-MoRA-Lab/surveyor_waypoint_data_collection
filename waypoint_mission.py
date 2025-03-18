@@ -89,10 +89,10 @@ def main(filename, erp_filename, mission_postfix= ""):
     data_to_be_collected = ['state', 'exo2']
 
     boat = surveyor.Surveyor(sensors_to_use=['exo2', 'camera'],
-                            sensors_config={'exo2': {'exo2_server_ip': '192.168.0.68'},
+                             sensors_config={'exo2': {'exo2_server_ip': '192.168.0.68'},
                                             'camera': {},
                                             'lidar': {}},
-                            logger_level=logging.INFO
+                             logger_level=logging.INFO
                             )
     with boat:
         start_mission(boat, 1)
