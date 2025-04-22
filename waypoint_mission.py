@@ -8,8 +8,8 @@ Inputs:
 import sys
 import time
 import pandas as pd
-import surveyor_library.helpers as hlp
-import surveyor_library.surveyor as surveyor
+import surveyor_library.surveyor_lib.helpers as hlp
+import surveyor_library.surveyor_lib.surveyor as surveyor
 from geopy.distance import geodesic
 import argparse
 import logging
@@ -89,7 +89,7 @@ def main(filename, erp_filename, mission_postfix= ""):
     data_to_be_collected = ['state', 'exo2']
 
     boat = surveyor.Surveyor(sensors_to_use=['exo2', 'camera'],
-                             sensors_config={'exo2': {'exo2_server_ip': '192.168.0.68'},
+                             sensors_config={'exo2': {'exo2_server_ip': '192.168.0.20'},
                                             'camera': {},
                                             'lidar': {}},
                              logger_level=logging.INFO
