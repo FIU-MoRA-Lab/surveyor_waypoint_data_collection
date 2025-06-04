@@ -6,16 +6,18 @@ Inputs:
     See the 'main' function for more details.
 """
 
-import sys
-import time
-import pandas as pd
-import surveyor_library.surveyor_lib.helpers as hlp
-import surveyor_library.surveyor_lib.surveyor as surveyor
-from geopy.distance import geodesic
 import argparse
 import logging
-from obstacle_avoider import obstacleAvoiderController
+import sys
+import time
+
 import numpy as np
+import pandas as pd
+from geopy.distance import geodesic
+
+import surveyor_library.surveyor_lib.helpers as hlp
+import surveyor_library.surveyor_lib.surveyor as surveyor
+from obstacle_avoider import obstacleAvoiderController
 
 
 def start_mission(boat, count=5):
@@ -98,7 +100,7 @@ def main(filename, erp_filename, mission_postfix=""):
     data_to_be_collected = ["state", "exo2"]
 
     boat = surveyor.Surveyor(
-        sensors_to_use=["exo2", "camera", 'lidar'],
+        sensors_to_use=["exo2", "camera", "lidar"],
         sensors_config={
             "exo2": {"exo2_server_ip": "192.168.0.20"},
             "camera": {},
@@ -107,7 +109,7 @@ def main(filename, erp_filename, mission_postfix=""):
         logger_level=logging.INFO,
     )
     boat.obs_avoider_controller = obstacleAvoiderController(
-        care_fov=90*np.pi/180,
+        care_fov=90 * np.pi / 180,
         safe_dist=7.0,
         k_theta=30.0,
         adaptive_fov=False,
