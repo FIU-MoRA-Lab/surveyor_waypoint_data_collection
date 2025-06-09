@@ -17,7 +17,7 @@ from geopy.distance import geodesic
 
 import surveyor_library.surveyor_lib.helpers as hlp
 import surveyor_library.surveyor_lib.surveyor as surveyor
-from obstacle_avoider import obstacleAvoiderController
+from obstacle_avoider import ObstacleAvoiderController
 
 
 def start_mission(boat, count=5):
@@ -108,7 +108,7 @@ def main(filename, erp_filename, mission_postfix=""):
         },
         logger_level=logging.INFO,
     )
-    boat.obs_avoider_controller = obstacleAvoiderController(
+    boat.obs_avoider_controller = ObstacleAvoiderController(
         care_fov=90 * np.pi / 180,
         safe_dist=7.0,
         k_theta=30.0,
