@@ -1,8 +1,8 @@
 import argparse
 import logging
 
-import surveyor_library.helpers as hlp
-import surveyor_library.surveyor as surveyor
+import surveyor_library.surveyor_lib.helpers as hlp
+import surveyor_library.surveyor_lib.surveyor as surveyor
 
 if __name__ == "__main__":
     mission_description = (
@@ -24,7 +24,13 @@ if __name__ == "__main__":
     # Parse the command line arguments
     args = parser.parse_args()
     boat = surveyor.Surveyor(
-        sensors_to_use=["exo2", "camera"], logger_level=logging.INFO
+        sensors_to_use=["exo2", "camera"],
+        sensors_config={
+            "exo2": {"server_ip": "192.168.0.20"},
+            "camera": {},
+            "lidar": {},
+        },
+        logger_level=logging.INFO,
     )
     data_to_be_collected = ["state", "exo2"]
 

@@ -87,7 +87,7 @@ def main(filename, erp_filename, mission_postfix=""):
     """
     print(f"Reading waypoints from {filename} and ERP from {erp_filename}")
     waypoints = hlp.read_csv_into_tuples(filename)
-    erp = hlp.read_csv_into_tuples(erp_filename)
+    erp = hlp.read_csv_into_tuples(erp_filename)[0]
 
     THROTTLE = 25  # Default throttle value
     index = 0  # Initialization variables
@@ -97,7 +97,7 @@ def main(filename, erp_filename, mission_postfix=""):
     boat = surveyor.Surveyor(
         sensors_to_use=["exo2", "camera"],
         sensors_config={
-            "exo2": {"exo2_server_ip": "192.168.0.20"},
+            "exo2": {"server_ip": "192.168.0.20"},
             "camera": {},
             "lidar": {},
         },
@@ -111,13 +111,11 @@ def main(filename, erp_filename, mission_postfix=""):
         current_coordinates = boat.get_gps_coordinates()
 
         while index < len(waypoints):
-
             print(f"Loading waypoint #{index + 1}")
             desired_coordinates = waypoints[index]
             boat.go_to_waypoint(desired_coordinates, erp, THROTTLE)
 
             while (control_mode := boat.get_control_mode()) != "Station Keep":
-
                 if control_mode == "Go To ERP":
                     print("Going to ERP, aborting mission")
                     sys.exit(1)
@@ -136,7 +134,7 @@ def main(filename, erp_filename, mission_postfix=""):
 
                 current_coordinates = boat.get_gps_coordinates()
                 print(
-                    f"Meters to next waypoint {geodesic(current_coordinates,desired_coordinates ).meters:.2f}"
+                    f"Meters to next waypoint {geodesic(current_coordinates, desired_coordinates).meters:.2f}"
                 )
 
             if hlp.are_coordinates_close(

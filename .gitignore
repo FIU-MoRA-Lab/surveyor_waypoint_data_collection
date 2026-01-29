@@ -1,3 +1,4 @@
+.mypy_cache/
 # Ignore all files in 'in ' and its subdirectories
 in/**
 in/*
